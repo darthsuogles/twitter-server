@@ -6,19 +6,30 @@ import sbtunidoc.Plugin.unidocSettings
 import scoverage.ScoverageSbtPlugin
 
 object TwitterServer extends Build {
+
+  lazy val scalaMajor = "2.10"
+  lazy val scalaMinor = "6"
+
+  lazy val scalaVer = s"$scalaMajor.$scalaMinor"
+
   val branch = Process("git" :: "rev-parse" :: "--abbrev-ref" :: "HEAD" :: Nil).!!.trim
-  val suffix = if (branch == "master") "" else "-SNAPSHOT"
+  //val suffix = if (branch == "master") "" else "-SNAPSHOT"
+  //val suffix = if (branch == "master") "" else "phi"
 
-  val libVersion = "1.20.0" + suffix
-  val utilVersion = "6.34.0" + suffix
-  val finagleVersion = "6.35.0" + suffix
+  val libVersion = s"1.20.0-$branch"
+  //val utilVersion = "6.34.0" + suffix
+  //val finagleVersion = "6.35.0" + suffix
+  val utilVersion = "6.34.0"
+  val finagleVersion = "6.35.0"
 
-  val jacksonVersion = "2.4.4"
+  //val jacksonVersion = "2.4.4"
+  val jacksonVersion = "2.7.2"
   val jacksonLibs = Seq(
     "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion,
     "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion,
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion exclude("com.google.guava", "guava"),
-    "com.google.guava" % "guava" % "16.0.1"
+    //"com.google.guava" % "guava" % "16.0.1"
+    "com.google.guava" % "guava" % "19.0"
   )
 
   def util(which: String) = "com.twitter" %% ("util-"+which) % utilVersion
@@ -34,8 +45,9 @@ object TwitterServer extends Build {
   val sharedSettings = Seq(
     version := libVersion,
     organization := "com.twitter",
-    scalaVersion := "2.11.7",
-    crossScalaVersions := Seq("2.10.6", "2.11.7"),
+    //scalaVersion := "2.11.7",
+    scalaVersion := scalaVer,
+    crossScalaVersions := Seq("2.10.6", "2.11.8"),
     libraryDependencies ++= Seq(
       "org.scalacheck" %% "scalacheck" % "1.12.2" % "test",
       "org.scalatest" %% "scalatest" % "2.2.4" % "test",
