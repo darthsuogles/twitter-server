@@ -8,6 +8,8 @@
   administrative HTTP server, tracing, stats, etc. These features are
   wired in correctly for use in production at Twitter.
 
+  This branch is a forked from =1.20.0=, the last version with =Scala 2.10.6= support.
+
 ** Status
    :PROPERTIES:
    :CUSTOM_ID: status
